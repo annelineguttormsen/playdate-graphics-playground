@@ -1,22 +1,33 @@
-import "dvd" -- DEMO
-local dvd = dvd(1, -1) -- DEMO
+import "CoreLibs/graphics"
+import "CoreLibs/crank"
+import "graphic/RadioWave"
 
+local screenWidth, screenHeight = playdate.display.getSize()
+local ticksPerRevolution = 6
 local gfx <const> = playdate.graphics
 local font = gfx.font.new('font/Mini Sans 2X') -- DEMO
 
 local function loadGame()
-	playdate.display.setRefreshRate(50) -- Sets framerate to 50 fps
+	playdate.display.setRefreshRate(20)
 	math.randomseed(playdate.getSecondsSinceEpoch()) -- seed for math.random
 	gfx.setFont(font) -- DEMO
+	RadioWave:init(0, screenHeight / 2, screenWidth, screenHeight / 2, 10, 10, 10, 10)
 end
 
 local function updateGame()
-	dvd:update() -- DEMO
+	local crankTicks = playdate.getCrankTicks(ticksPerRevolution)
+	if crankTicks == 1 then
+		RadioWave:update(0, screenHeight / 2, screenWidth, screenHeight / 2, 20, 50, 10, 10)
+	elseif crankTicks == -1 then
+		RadioWave:update(0, screenHeight / 2, screenWidth, screenHeight / 2, 20, 50, 10, 10)
+	else
+		RadioWave:update(0, screenHeight / 2, screenWidth, screenHeight / 2, 10, 10, 10, 10)
+	end
 end
 
 local function drawGame()
 	gfx.clear() -- Clears the screen
-	dvd:draw() -- DEMO
+	RadioWave:draw()
 end
 
 loadGame()
